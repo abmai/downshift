@@ -241,3 +241,47 @@ test('should not select any if all disabled when arrow up', () => {
     ),
   ).toEqual(-1)
 })
+
+test('should handle undefined nodes in getItemNodeFromIndex', () => {
+  const moveAmount = 1
+  const baseIndex = 0
+  const itemCount = 3
+  // Returns undefined for some indices (e.g., windowed/virtualized lists)
+  const getItemNodeFromIndex = index => {
+    if (index === 1) {
+      return undefined
+    }
+    return {hasAttribute: () => index === 2}
+  }
+
+  expect(
+    getNextWrappingIndex(
+      moveAmount,
+      baseIndex,
+      itemCount,
+      getItemNodeFromIndex,
+    ),
+  ).toEqual(0)
+})
+
+test('should handle undefined nodes when moving backwards', () => {
+  const moveAmount = -1
+  const baseIndex = 2
+  const itemCount = 3
+  // Returns undefined for some indices (e.g., windowed/virtualized lists)
+  const getItemNodeFromIndex = index => {
+    if (index === 1) {
+      return undefined
+    }
+    return {hasAttribute: () => index === 0}
+  }
+
+  expect(
+    getNextWrappingIndex(
+      moveAmount,
+      baseIndex,
+      itemCount,
+      getItemNodeFromIndex,
+    ),
+  ).toEqual(2)
+})

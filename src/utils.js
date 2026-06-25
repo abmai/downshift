@@ -373,13 +373,15 @@ function getNextNonDisabledIndex(
 
   if (moveAmount > 0) {
     for (let index = baseIndex + 1; index < itemCount; index++) {
-      if (!getItemNodeFromIndex(index).hasAttribute('disabled')) {
+      const node = getItemNodeFromIndex(index)
+      if (node && !node.hasAttribute('disabled')) {
         return index
       }
     }
   } else {
     for (let index = baseIndex - 1; index >= 0; index--) {
-      if (!getItemNodeFromIndex(index).hasAttribute('disabled')) {
+      const node = getItemNodeFromIndex(index)
+      if (node && !node.hasAttribute('disabled')) {
         return index
       }
     }
